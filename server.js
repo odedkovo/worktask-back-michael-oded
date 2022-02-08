@@ -1,9 +1,7 @@
 const express = require('express');
 const session = require('express-session')
 const cookieParser = require('cookie-parser');
-const bugService = require('./services/BugService');
-// const bugService = require('./services/bug.service');
-const userService = require('./services/user.service');
+const marketService = require('./services/marketService');
 const app = express();
 
 app.use(express.json());
@@ -17,94 +15,44 @@ app.use(session({
     cookie: { secure: false }
 }))
 
-app.get('/api/bug', (req, res) => {
-  bugService.query().then((bugs) => {
-    res.send(bugs);
+app.get('/api/market', (req, res) => {
+  marketService.query().then((users) => {
+    res.send(users);
   });
 });
 
-app.post('/api/bug', (req, res) => {
-  const bug = req.body;
-//  const {loggedinUser} = req.session;
-//   if (loggedinUser) {
-//     bug.creator = { ...loggedinUser };
-//   }
-//   if (!bug.creator) {
-//     return res.status(401).send('PLEASE LOG IN');
-//   }
-  bugService.add(bug).then((savedBugId) => {
-    res.send(`${savedBugId}`);
+app.post('/api/market', (req, res) => {
+  const user = req.body;
+  marketService.add(user).then((savedUserId) => {
+    res.send(`${savedUserId}`);
   });
 });
 
-app.put('/api/bug/:bugId', (req, res) => {
-  const bug = req.body;
-  // const {loggedinUser} = req.session;
-  // console.log(loggedinUser, bug);
-  // if (!loggedinUser) return res.status(401).send('PLEASE LOG IN');
-  bugService.update(bug).then((updatedBug) => {
-    res.send(updatedBug);
+app.put('/api/market/:userId', (req, res) => {
+  const user = req.body;
+  marketService.update(user).then((updatedUser) => {
+    res.send(updatedUser);
   });
 });
 
-app.get('/api/bug/:bugId', (req, res) => {
-  const {bugId} = req.params
-  bugService
-    .getById(bugId)
-    .then((bug) => {
-      res.send(bug);
+app.get('/api/market/:userId', (req, res) => {
+  const {userId} = req.params
+  marketService
+    .getById(userId)
+    .then((user) => {
+      res.send(user);
     })
     .catch((err) => {
-      res.status(404).send('id dont found');
+      res.status(404).send('id not found');
     });
 });
 
-app.delete('/api/bug/:id', (req, res) => {
-  const bugId = req.params.id;
-  // const {loggedinUser} = req.session;
-  //   if (!loggedinUser) return res.status(403).send('LogIn first')
-  bugService.remove(bugId).then(() => {
-    res.send('you removed a bug');
+app.delete('/api/market/:id', (req, res) => {
+  const userId = req.params.id;
+  marketService.remove(userId).then(() => {
+    res.send('you removed a user');
   }).catch(err => {err})
 });
 
-app.post('/api/user/login', (req, res) => {
-    const { username, password } = req.body;
-    userService.checkLogin({ username, password })
-      .then(user => {
-        if (user) {
-          req.session.loggedinUser = user
-          console.log('Save user to session');
-          res.send(user)
-        } else {
-          res.status(401).send('Invalid username / password')
-        }
-      })
-  });
-  
-
-app.post('/api/user/logout', (req, res) => {
-        req.session.destroy();
-        res.end(('you logged out')
-)});
-;
-
-app.post('/api/user/signup', (req, res) => {
-    const user = req.body;
-    console.log(user);
-    userService.add(user).then((user) =>{ 
-        req.session.loggedinUser = user;
-        res.send(user)})
-})
-
-app.delete('/api/user/:id', (req, res) => {
-const userId = req.params.id;
-userService.remove(userId).then((id)=> res.send(`UserID ${id} Deleted`))
-.catch((err) => res.status(404).send(`[error] ,${err}`))
-}) 
-
-app.get('/api/user', (req, res) => {
-    userService.query().then((users) => res.send(users))
-})
 
 app.listen(3030, () => console.log('Server listening on port 3030!'));

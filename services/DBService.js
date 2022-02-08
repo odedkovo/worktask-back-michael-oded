@@ -5,7 +5,7 @@ var connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: '',
-    database: 'bug_db',
+    database: 'market_db',
     insecureAuth: true
 });
 
@@ -24,7 +24,6 @@ function runSQL(sqlCommand) {
     })
 }
 
-// connection.end();
 module.exports = {
     runSQL
 }
