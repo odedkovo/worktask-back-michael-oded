@@ -1,34 +1,48 @@
-const express = require('express');
-const session = require('express-session')
+const express = require('express')
+const cors = require('cors')
+const path = require('path')
+
+const app = express()
+const http = require('http').createServer(app)
+
+// Express App Config
+
+app.use(express.json())
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.resolve(__dirname, 'public')))
+} else {
+    const corsOptions = {
+        origin: ['http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3000', 'http://localhost:3000'],
+        credentials: true
+    }
+    app.use(cors(corsOptions))
+}
+
+//sss
+
+
 const cookieParser = require('cookie-parser');
 const marketService = require('./services/marketService');
-const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 
-app.use(session({
-    secret: 'some secret token',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}))
-
-app.get('/api/market', (req, res) => {
-  marketService.query().then((users) => {
-    res.send(users);
+  app.get('/api/market', (req, res) => {
+    marketService.query().then((users) => {
+      res.send(users);
+    });
   });
-});
-
-app.post('/api/market', (req, res) => {
-  const user = req.body;
-  marketService.add(user).then((savedUserId) => {
-    res.send(`${savedUserId}`);
+  
+  app.post('/api/market', (req, res) => {
+    const user = req.body;
+    marketService.add(user).then((savedUserId) => {
+      res.send(`${savedUserId}`);
+    });
   });
-});
-
-app.put('/api/market/:userId', (req, res) => {
+  
+  app.put('/api/market/:userId', (req, res) => {
   const user = req.body;
   marketService.update(user).then((updatedUser) => {
     res.send(updatedUser);
@@ -38,13 +52,13 @@ app.put('/api/market/:userId', (req, res) => {
 app.get('/api/market/:userId', (req, res) => {
   const {userId} = req.params
   marketService
-    .getById(userId)
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      res.status(404).send('id not found');
-    });
+  .getById(userId)
+  .then((user) => {
+    res.send(user);
+  })
+  .catch((err) => {
+    res.status(404).send('id not found');
+  });
 });
 
 app.delete('/api/market/:id', (req, res) => {
@@ -54,5 +68,11 @@ app.delete('/api/market/:id', (req, res) => {
   }).catch(err => {err})
 });
 
+app.get('/**', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'))
+})
 
-app.listen(3030, () => console.log('Server listening on port 3030!'));
+const port = process.env.PORT || 3030
+http.listen(port, () => {
+console.log('server is running on 3030')
+})
