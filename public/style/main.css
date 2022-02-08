@@ -1,0 +1,16 @@
+body {
+  margin: 0 auto;
+  background-color: lightblue;
+  text-align: center;
+}
+
+table {
+  margin: 0 auto;
+}
+
+.main-header {
+  height: 15vh;
+  background-color: rgb(238, 144, 144);
+  display: flex;
+  justify-content: space-between;
+}

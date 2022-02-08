@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "YTAuy"
+  },
+  {
+    "_id": "qxHz7"
+  },
+  {
+    "_id": "9Ri7E"
+  },
+  {
+    "_id": "H4jqm"
+  },
+  {
+    "username": "michael",
+    "nickname": "aharo",
+    "password": "123456",
+    "_id": "2H7ju"
+  },
+  {
+    "username": "puzkilah",
+    "nickname": "matitao",
+    "password": "555",
+    "isAdmin": false,
+    "_id": "rsn1U"
+  },
+  {
+    "username": "michael",
+    "nickname": "misha123",
+    "password": "12345",
+    "isAdmin": true,
+    "_id": "rsn2U"
+  },
+  {
+    "username": "shimi",
+    "nickname": "meshaushe",
+    "password": "125",
+    "isAdmin": false,
+    "_id": "rsn9U"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "description": "my bug is that i dont have any weekends",
+    "title": "lets finish the curse",
+    "severity": 1,
+    "creator": {
+      "username": "Tzuri",
+      "nickname": "fjiljfa",
+      "isAdmin": false
+    },
+    "_id": "HzAA8",
+    "createdAt": 1641398144435
+  },
+  {
+    "description": "im tyred of not have any freedom",
+    "title": "title",
+    "severity": 2,
+    "creator": {
+      "username": "michael",
+      "nickname": "misha123",
+      "isAdmin": true
+    },
+    "_id": "h0GNE",
+    "createdAt": 1641397999447
+  }
+]
